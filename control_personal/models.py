@@ -2,6 +2,9 @@ from django.db import models
 
 
 # Create your models here.
+from duplicity.gpginterface import Process
+
+
 class Person (models.Model):
     name = models.CharField('Person Name', max_length=50)
     phone = models.CharField('Person Phone Number', max_length=15)
@@ -32,6 +35,14 @@ class Student (Person):
 
 class Professor (Person):
     salary = models.FloatField('Professor Salary')
+
+    def __str__(self):
+        return self.name
+
+class Group (models.Model):
+    name = models.CharField('Group Name', max_length=50, default="Group")
+    profesor = models.OneToOneField(Professor, on_delete=models.CASCADE)
+    estudiantes = models.ManyToManyField(Student)
 
     def __str__(self):
         return self.name
